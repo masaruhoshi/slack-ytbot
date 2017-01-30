@@ -13,8 +13,6 @@ DEPLOY_DAEMON_ERROR = "/tmp/ytbot.log"
 # YTBOT id
 AT_BOT = "<@" + os.environ.get('YT_BOT_ID') + ">"
 
-FIND_COMMAND = "find"
-
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(os.environ.get('YT_BOT_TOKEN'))
 
@@ -76,14 +74,10 @@ def handle_command(command, channel):
         are valid commands. If so, then acts on the commands. If not,
         returns back what it needs for clarification.
     """
-    args = ""
-    video = ""
-    response = "Not sure what you mean. Use the *" + FIND_COMMAND + "* [something]"
-    if command.startswith(FIND_COMMAND):
-        args = ' '.join(command.split(' ')[1:])
-        video = youtube_search(args)
-        print video
-        response = video
+    args = ' '.join(command.split(' ')[1:])
+    video = youtube_search(args)
+    print video
+    response = video
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
